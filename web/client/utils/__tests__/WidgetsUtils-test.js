@@ -28,6 +28,9 @@ import {
     canTableWidgetBeDependency,
     checkMapSyncWithWidgetOfMapType,
     addCurrentTimeShapes,
+    getWidgetByDependencyPath,
+    getNextAvailableName,
+    updateDependenciesForMultiViewCompatibility,
     getDefaultNullPlaceholderForDataType
 } from '../WidgetsUtils';
 import * as simpleStatistics from 'simple-statistics';
@@ -841,6 +844,141 @@ describe('Test WidgetsUtils', () => {
             expect(shapes[1].line.width).toBe(2);
         });
     });
+    describe('getWidgetByDependencyPath', () => {
+        const testWidgets = [
+            { id: 'widget-1', type: 'map', title: 'Map Widget 1' },
+            { id: 'widget-2', type: 'chart', title: 'Chart Widget 2' },
+            { id: 'widget-3', type: 'legend', title: 'Legend Widget 3' },
+            { id: 'widget-4', type: 'text', title: 'Text Widget 4' }
+        ];
+
+        it('should return widget when dependency path matches widget ID', () => {
+            const result = getWidgetByDependencyPath('widgets[widget-1]', testWidgets);
+            expect(result).toEqual({ id: 'widget-1', type: 'map', title: 'Map Widget 1' });
+        });
+
+        it('should return null when widget ID does not exist', () => {
+            const result = getWidgetByDependencyPath('widgets[nonexistent-widget]', testWidgets);
+            expect(result).toBeFalsy();
+        });
+
+        it('should return null when dependency path does not match WIDGETS_REGEX pattern', () => {
+            const result = getWidgetByDependencyPath('invalid-path', testWidgets);
+            expect(result).toBeFalsy();
+        });
+
+        it('should return null when dependency path is empty string', () => {
+            const result = getWidgetByDependencyPath('', testWidgets);
+            expect(result).toBeFalsy();
+        });
+
+        it('should return null when dependency path is null', () => {
+            const result = getWidgetByDependencyPath(null, testWidgets);
+            expect(result).toBeFalsy();
+        });
+
+        it('should return null when dependency path is undefined', () => {
+            const result = getWidgetByDependencyPath(undefined, testWidgets);
+            expect(result).toBeFalsy();
+        });
+
+        it('should return null when widgets array is empty', () => {
+            const result = getWidgetByDependencyPath('widgets[widget-1]', []);
+            expect(result).toBeFalsy();
+        });
+
+        it('should return null when widgets array is null', () => {
+            const result = getWidgetByDependencyPath('widgets[widget-1]', null);
+            expect(result).toBeFalsy();
+        });
+
+        it('should return null when widgets array is undefined', () => {
+            const result = getWidgetByDependencyPath('widgets[widget-1]', undefined);
+            expect(result).toBeFalsy();
+        });
+
+        it('should handle dependency path with special characters in widget ID', () => {
+            const widgetsWithSpecialChars = [
+                { id: 'widget-with-dashes', type: 'map' },
+                { id: 'widget_with_underscores', type: 'chart' },
+                { id: 'widget.with.dots', type: 'legend' }
+            ];
+
+            expect(getWidgetByDependencyPath('widgets[widget-with-dashes]', widgetsWithSpecialChars))
+                .toEqual({ id: 'widget-with-dashes', type: 'map' });
+            expect(getWidgetByDependencyPath('widgets[widget_with_underscores]', widgetsWithSpecialChars))
+                .toEqual({ id: 'widget_with_underscores', type: 'chart' });
+            expect(getWidgetByDependencyPath('widgets[widget.with.dots]', widgetsWithSpecialChars))
+                .toEqual({ id: 'widget.with.dots', type: 'legend' });
+        });
+
+        it('should handle dependency path with numeric widget ID', () => {
+            const widgetsWithNumericIds = [
+                { id: '123', type: 'map' },
+                { id: '456', type: 'chart' }
+            ];
+
+            expect(getWidgetByDependencyPath('widgets[123]', widgetsWithNumericIds))
+                .toEqual({ id: '123', type: 'map' });
+            expect(getWidgetByDependencyPath('widgets["456"]', widgetsWithNumericIds))
+                .toEqual({ id: '456', type: 'chart' });
+        });
+    });
+
+    describe('getNextAvailableName', () => {
+        it('should return "View 1" when no views exist', () => {
+            const data = [];
+            const result = getNextAvailableName(data);
+            expect(result).toBe('View 1');
+        });
+
+        it('should return next available number when consecutive views exist', () => {
+            const data = [{ name: 'View 1' }, { name: 'View 2' }, { name: 'View 3' }];
+            const result = getNextAvailableName(data);
+            expect(result).toBe('View 4');
+        });
+
+        it('should fill in missing gaps in the sequence', () => {
+            const data = [{ name: 'View 1' }, { name: 'View 3' }, { name: 'View 4' }];
+            const result = getNextAvailableName(data);
+            expect(result).toBe('View 2');
+        });
+    });
+
+    describe('updateDependenciesForMultiViewCompatibility', () => {
+        it('should handle data with existing layouts array', () => {
+            const data = {
+                layouts: [{ id: '1', name: 'Layout 1' }],
+                widgets: [{ id: 'w1', layoutId: '1' }]
+            };
+            const result = updateDependenciesForMultiViewCompatibility(data);
+            expect(Array.isArray(result.layouts)).toBe(true);
+            expect(result.layouts[0].id).toBe('1');
+            expect(result.widgets[0].layoutId).toBe('1');
+        });
+
+        it('should wrap a single layout object into an array if not already an array', () => {
+            const data = {
+                layouts: { md: [] },
+                widgets: [{ id: 'w1' }]
+            };
+            const result = updateDependenciesForMultiViewCompatibility(data);
+            expect(Array.isArray(result.layouts)).toBe(true);
+            expect(result.layouts[0].name).toBe('Main view');
+            expect(result.widgets[0].layoutId).toBe(result.layouts[0].id);
+        });
+
+        it('should assign missing layoutId to widgets based on first layout', () => {
+            const data = {
+                layouts: [{ id: 'l1', name: 'Layout 1' }],
+                widgets: [{ id: 'w1' }, { id: 'w2', layoutId: 'l2' }]
+            };
+            const result = updateDependenciesForMultiViewCompatibility(data);
+            expect(result.widgets[0].layoutId).toBe('l1');
+            expect(result.widgets[1].layoutId).toBe('l2');
+        });
+    });
+
     describe('getDefaultNullPlaceholderForDataType', () => {
         it('returns correct default values for numeric types', () => {
             expect(getDefaultNullPlaceholderForDataType('int')).toBe(0);

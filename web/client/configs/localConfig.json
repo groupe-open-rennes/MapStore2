@@ -50,7 +50,7 @@
   },
   "authenticationRules": [
     {
-      "urlPattern": ".*geostore.*",
+      "urlPattern": ".*rest/geostore.*",
       "method": "bearer"
     },
     {
@@ -964,6 +964,12 @@
       },
       "Notifications",
       {
+        "name": "MapEditor",
+        "cfg": {
+          "titleMsgId": "widgets.mapWidget.mapEditorTitle"
+        }
+      },
+      {
         "name": "About",
         "cfg": {
           "githubUrl": "https://github.com/geosolutions-it/MapStore2/tree/"
@@ -1239,6 +1245,7 @@
       "UserManager",
       "GroupManager",
       "TagsManager",
+      "IPManager",
       "Footer",
       { "name": "About" }
     ]
