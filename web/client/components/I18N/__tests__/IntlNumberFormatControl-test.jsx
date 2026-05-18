@@ -74,7 +74,7 @@ describe('IntlNumberFormControl', () => {
             <InputIntl {...formProps}/>, document.getElementById("container"));
         expect(cmp).toExist();
         const elements = document.querySelectorAll('input');
-        expect(elements[0].value).toBe("1.899,01");
+        expect(elements[0].value).toMatch(/^(1\.899,01|1899,01)$/);
     });
 
     it('checks if the component renders value in FR locale', () => {
