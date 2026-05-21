@@ -5,7 +5,6 @@
   "repository": "https://github.com/geosolutions-it/MapStore2",
   "main": "index.js",
   "eslintConfig": {
-    "root": true,
     "extends": [
       "@mapstore/eslint-config-mapstore"
     ],
