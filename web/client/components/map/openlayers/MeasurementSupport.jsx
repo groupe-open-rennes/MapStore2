@@ -1097,7 +1097,6 @@ export default class MeasurementSupport extends React.Component {
             this.props.changeGeometry([...currentFeatures, newFeature]);
             this.props.setTextLabels([...this.textLabels]);
 
-            // do nothing here: features will be rendered by updateFeatures
             if (!this.props.measurement.disableLabels) {
                 last(this.measureTooltipElements).className = 'tooltip tooltip-static';
                 last(this.measureTooltips).setOffset([0, -7]);

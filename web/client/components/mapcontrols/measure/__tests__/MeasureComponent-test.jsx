@@ -471,10 +471,10 @@ describe("test the MeasureComponent", () => {
         expect(buttons[1].classList.contains('disabled')).toBe(false);
         expect(buttons[2].classList.contains('disabled')).toBe(false);
         expect(buttons[3].classList.contains('disabled')).toBe(false);
-        expect(buttons[4].classList.contains('disabled')).toBe(false); // select button
-        expect(buttons[5].classList.contains('disabled')).toBe(true); // delete selected button (no selection)
-        expect(buttons[6].classList.contains('disabled')).toBe(false); // export JSON button
-        expect(buttons[7].classList.contains('disabled')).toBe(true); // Add as layer button (exportToAnnotation=true)
+        expect(buttons[4].classList.contains('disabled')).toBe(false);
+        expect(buttons[5].classList.contains('disabled')).toBe(true);
+        expect(buttons[6].classList.contains('disabled')).toBe(false);
+        expect(buttons[7].classList.contains('disabled')).toBe(true);
         expect(buttons[8].classList.contains('disabled')).toBe(false);
         expect(buttons[8].childNodes[0].className).toContain('floppy-disk');
 
