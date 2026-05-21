@@ -827,10 +827,16 @@ export default class MeasurementSupport extends React.Component {
             this.props.map.on('pointermove', this.updateMeasurementResults.bind(this));
         }
 
+        if (this.pointerMoveKey) {
+            unByKey(this.pointerMoveKey);
+        }
         this.pointerMoveKey = this.props.map.on('pointermove', (evt) =>
             this.pointerMoveHandler(evt)
         );
 
+        if (this.selectClickListener) {
+            unByKey(this.selectClickListener);
+        }
         this.selectClickListener = this.props.map.on('singleclick', (evt) => {
             if (this.props.measurement.mode !== 'select') {
                 return;

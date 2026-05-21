@@ -102,7 +102,7 @@ describe('IntlNumberFormControl', () => {
             <InputIntl {...formProps}/>, document.getElementById("container"));
         expect(cmp).toExist();
         const elements = document.querySelectorAll('input');
-        expect(elements[0].value).toEqual("1899,01");
+        expect(elements[0].value).toEqual("1.899,01");
     });
 
     it('checks if the value in US locale', () => {
