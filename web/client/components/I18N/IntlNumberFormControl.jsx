@@ -166,7 +166,12 @@ class IntlNumberFormControl extends React.Component {
     format = val => {
         if (!isNaN(val) && val !== "NaN") {
             const locale = this.context && this.context.intl && this.context.intl.locale || "en-US";
-            const formatter = new Intl.NumberFormat(locale, {minimumFractionDigits: 0, maximumFractionDigits: 20});
+            const numberFormatOptions = {minimumFractionDigits: 0, maximumFractionDigits: 20};
+            // Keep historical behavior for Italian locale where 4-digit numbers are grouped.
+            if ((locale || '').toLowerCase().startsWith('it')) {
+                numberFormatOptions.useGrouping = true;
+            }
+            const formatter = new Intl.NumberFormat(locale, numberFormatOptions);
             return formatter.format(val);
         }
         return "";
