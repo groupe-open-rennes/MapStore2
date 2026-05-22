@@ -15,10 +15,24 @@ In the following guide you will learn how to configure MapStore to use an extern
 
 ## Externalize properties files
 
-MapStore has a file called `geostore-datasource-ovr.properties`. This file is on the repository in the folder `java/web/src/main/resources`, in the final `mapstore.war` package it will be copied into `WEB-INF/classes` path. It contains the set-up for the database connection. Anyway if you edit the file in `WEB-INF/classes` this file will be overridden on the next re-deploy. To preserve your configuration on every deploy you can use an environment variable, `geostore-ovr`, to configure the path to an override file in a different, external directory. In this file the user can re-define the default configuration and so set-up the database configuration.
+!!! warning "Recommended Approach"
+    The preferred way to externalize database configuration is to use the **data directory** mechanism via the `datadir.location` property. See [Externalized Configuration](externalized-configuration.md) for the recommended approach.
 
-For instance using tomcat on linux you will have to do something like this to add the environment variable to the JAVA_OPTS
-> where to add your JAVA_OPTS depends on your operating system. For instance the file could be `/etc/default/tomcat8`, or similar, in linux debian
+MapStore has a file called `geostore-datasource-ovr.properties`. This file is on the repository in the folder `java/web/src/main/resources`, in the final `mapstore.war` package it will be copied into `WEB-INF/classes` path. It contains the set-up for the database connection.
+
+### Modern Approach (Recommended)
+
+To externalize your database configuration, use the `datadir.location` system property to point to your data directory:
+
+```sh
+java -Ddatadir.location=/etc/mapstore/datadir -jar mapstore.war
+```
+
+Place your `geostore-datasource-ovr.properties` file in the data directory (e.g., `/etc/mapstore/datadir/geostore-datasource-ovr.properties`). This approach provides better organization and makes updates persist across deployments.
+
+### Legacy Approach (Deprecated)
+
+Alternatively, you can use the `geostore-ovr` environment variable directly (this method is maintained for backward compatibility but is no longer recommended):
 
 ```properties
 # here the path to the ovr file
@@ -28,7 +42,10 @@ GEOSTORE_OVR_FILE=file:///var/lib/tomcat/conf/geostore-ovr.properties
 JAVA_OPTS="-Dgeostore-ovr=$GEOSTORE_OVR_FILE [other opts]"
 ```
 
-So your file `/var/lib/tomcat/conf/geostore-ovr.properties` will contain the overrides to the database set-up.
+Your file `/var/lib/tomcat/conf/geostore-ovr.properties` will contain the overrides to the database set-up.
+
+!!! note
+    where to add your JAVA_OPTS depends on your operating system. For instance the file could be `/etc/default/tomcat8`, or similar, in linux debian
 
 ## Database creation Mode
 
