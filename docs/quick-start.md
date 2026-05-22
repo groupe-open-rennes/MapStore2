@@ -14,17 +14,17 @@ We hope you enjoy MapStore!
 
 Go to the location where you saved the zip file, unzip the contents and run:
 
-Windows: `mapstore2_startup.bat`
+Windows: `mapstore2-startup.bat`
 
-Linux: `./mapstore2_startup.sh`
+Linux: `./mapstore2-startup.sh`
 
 Point your browser to: [http://localhost:8082/mapstore](http://localhost:8082/mapstore)
 
 To stop MapStore simply do:
 
-Windows: `mapstore2_shutdown.bat`
+Windows: `mapstore2-shutdown.bat`
 
-Linux: `./mapstore2_shutdown.sh`
+Linux: `./mapstore2-shutdown.sh`
 
 ## Package Contents
 
