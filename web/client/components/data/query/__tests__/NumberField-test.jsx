@@ -114,7 +114,7 @@ describe('NumberField', () => {
     it("check if the number is rendered in correct language format", () => {
         // Test with different locales to ensure numbers are formatted correctly
         const testCases = [
-            { locale: "it-IT", value: 1234.56, expected: /^(1\.234,56|1234,56)$/ }, // Italiano
+            { locale: "it-IT", value: 1234.56, expected: "1.234,56" }, // Italiano
             { locale: "en-US", value: 1234.56, expected: "1,234.56" }, // English
             { locale: "fr-FR", value: 1234.56, expected: /1\s234,56/ }, // Français (regex for space)
             { locale: "de-DE", value: 1234.56, expected: "1.234,56" }, // Deutsch
@@ -142,8 +142,8 @@ describe('NumberField', () => {
             expect(inputs.length).toBe(1);
 
             // Check that the number is formatted according to the locale
-            if (expected instanceof RegExp) {
-                expect(inputs[0].value).toMatch(expected);
+            if (locale === 'fr-FR') {
+                expect(inputs[0].value).toMatch(expected); // Handles regex patterns for flexible matching (e.g., French locale space variations)
             } else {
                 expect(inputs[0].value).toBe(expected);
             }
