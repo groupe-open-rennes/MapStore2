@@ -317,7 +317,7 @@ class MeasureComponent extends React.Component {
                         <ButtonToolbar>
                             <Toolbar
                                 btnDefaultProps={{
-                                    className: 'square-button-md',
+                                    className: 'square-button',
                                     bsStyle: 'primary'
                                 }}
                                 buttons={
@@ -360,7 +360,7 @@ class MeasureComponent extends React.Component {
                                 }/>
                             <Toolbar
                                 btnDefaultProps={{
-                                    className: 'square-button-md',
+                                    className: 'square-button',
                                     bsStyle: 'primary'
                                 }}
                                 buttons={
@@ -375,7 +375,7 @@ class MeasureComponent extends React.Component {
                                 }/>
                             <Toolbar
                                 btnDefaultProps={{
-                                    className: 'square-button-md',
+                                    className: 'square-button',
                                     bsStyle: 'primary'
                                 }}
                                 buttons={[
