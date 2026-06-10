@@ -16,7 +16,7 @@ In the following guide you will learn how to configure MapStore to use an extern
 ## Externalize properties files
 
 !!! warning "Recommended Approach"
-    The preferred way to externalize database configuration is to use the **data directory** mechanism via the `datadir.location` property. See [Externalized Configuration](externalized-configuration.md) for the recommended approach.
+    The preferred way to externalize database configuration is to use the **data directory** mechanism via the `datadir.location` property. It provides a single data directory that centralizes all MapStore configuration files (database, proxy, JSON configs, etc.) and persists across updates. See [Externalized Configuration](externalized-configuration.md) for the recommended approach.
 
 MapStore has a file called `geostore-datasource-ovr.properties`. This file is on the repository in the folder `java/web/src/main/resources`, in the final `mapstore.war` package it will be copied into `WEB-INF/classes` path. It contains the set-up for the database connection.
 
@@ -32,7 +32,8 @@ Place your `geostore-datasource-ovr.properties` file in the data directory (e.g.
 
 ### Legacy Approach (Deprecated)
 
-Alternatively, you can use the `geostore-ovr` environment variable directly (this method is maintained for backward compatibility but is no longer recommended):
+Alternatively, you can use the `geostore-ovr` environment variable directly (this method is maintained for backward compatibility but is no longer recommended).
+For instance using tomcat on linux you will have to do something like this to add the environment variable to the JAVA_OPTS:
 
 ```properties
 # here the path to the ovr file
@@ -64,7 +65,12 @@ geostoreEntityManagerFactory.jpaPropertyMap[hibernate.hbm2ddl.auto]=validate
 
 In this case it is necessary to manually create the required tables using the scripts available [here](https://github.com/geosolutions-it/geostore/tree/master/doc) for the needed DBMS.
 
-The `update` mode is usually discouraged in production. On production servers you should always use `validate` mode and apply SQL scripts and/or patches manually. Anyway before every update a database backup is strongly suggested.
+The `update` mode is the recommended approach for most installations: it automatically applies schema changes on startup whenever a new GeoStore version introduces new tables or columns, avoiding the need to run migration scripts manually. It is particularly useful when following the standard MapStore upgrade path.
+
+!!! warning
+    The `update` mode should always be validated in a staging or QA environment **before** applying it to production. It does not roll back failed changes, and some structural migrations (e.g. primary key restructuring) cannot be handled automatically and will still require manual SQL scripts — check the [migration guide](mapstore-migration-guide.md) for version-specific notes. A database backup before every upgrade is strongly recommended regardless of the mode used.
+
+If you need strict control over schema changes (e.g. the database user has no DDL permissions), use `validate` mode and apply SQL migration scripts manually as described in the [migration guide](mapstore-migration-guide.md).
 
 ## H2
 
