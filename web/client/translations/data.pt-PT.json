@@ -1061,7 +1061,8 @@
     "measureSupport": {
       "continueLine": "Clicar para continuar a desenhar a linha",
       "continuePolygon": "Clicar para continuar a desenhar o polígono",
-      "startDrawing": "Clicar para iniciar o desenho"
+      "startDrawing": "Clicar para iniciar o desenho",
+      "selectMode": "Clicar numa medição para a selecionar"
     },
     "measureComponent": {
       "Measure": "Medir",
@@ -1101,6 +1102,8 @@
       "altitude": "Altitude",
       "latitude": "Latitude",
       "longitude": "Longitude",
+      "selectMeasures": "Selecione as medidas a serem excluídas",
+      "deleteSelected": "Excluir medidas selecionadas",
       "distanceLabel": "Distancia",
       "pointLabel": "Ponto",
       "heightLabel": "Altura",

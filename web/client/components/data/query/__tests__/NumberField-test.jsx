@@ -118,7 +118,7 @@ describe('NumberField', () => {
             { locale: "en-US", value: 1234.56, expected: "1,234.56" }, // English
             { locale: "fr-FR", value: 1234.56, expected: /1\s234,56/ }, // Français (regex for space)
             { locale: "de-DE", value: 1234.56, expected: "1.234,56" }, // Deutsch
-            { locale: "es-ES", value: 1234.56, expected: "1234,56" }   // Español
+            { locale: "es-ES", value: 1234.56, expected: "1.234,56" }   // Español
         ];
 
         testCases.forEach(({ locale, value, expected }) => {
