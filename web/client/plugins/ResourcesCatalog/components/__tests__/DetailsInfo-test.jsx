@@ -10,9 +10,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import expect from 'expect';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 import DetailsInfo from '../DetailsInfo';
 import { waitFor } from '@testing-library/react';
 import { Simulate } from 'react-dom/test-utils';
+
+const mockStore = createStore((state = { locale: { current: 'en-US' } }) => state);
 
 describe('DetailsInfo component', () => {
     beforeEach((done) => {
@@ -30,7 +34,7 @@ describe('DetailsInfo component', () => {
         expect(detailsInfo).toBeTruthy();
     });
     it('should render tabs items', (done) => {
-        ReactDOM.render(<DetailsInfo
+        ReactDOM.render(<Provider store={mockStore}><DetailsInfo
             tabs={[
                 {
                     type: 'tab',
@@ -45,7 +49,7 @@ describe('DetailsInfo component', () => {
                     ]
                 }
             ]}
-        />, document.getElementById('container'));
+        /></Provider>, document.getElementById('container'));
         const detailsInfo = document.querySelector('.ms-details-info');
         expect(detailsInfo).toBeTruthy();
         waitFor(() => document.querySelector('.ms-details-info-fields'))
@@ -58,7 +62,7 @@ describe('DetailsInfo component', () => {
             .catch(done);
     });
     it('should allow editing of editable fields and trigger onChange (text)', (done) => {
-        ReactDOM.render(<DetailsInfo
+        ReactDOM.render(<Provider store={mockStore}><DetailsInfo
             editing
             tabs={[
                 {
@@ -84,7 +88,7 @@ describe('DetailsInfo component', () => {
                 }
                 done();
             }}
-        />, document.getElementById('container'));
+        /></Provider>, document.getElementById('container'));
         const detailsInfo = document.querySelector('.ms-details-info');
         expect(detailsInfo).toBeTruthy();
         waitFor(() => document.querySelector('.ms-details-info-fields'))
@@ -95,7 +99,7 @@ describe('DetailsInfo component', () => {
             .catch(done);
     });
     it('should allow editing of editable fields and trigger onChange (boolean)', (done) => {
-        ReactDOM.render(<DetailsInfo
+        ReactDOM.render(<Provider store={mockStore}><DetailsInfo
             editing
             tabs={[
                 {
@@ -121,7 +125,7 @@ describe('DetailsInfo component', () => {
                 }
                 done();
             }}
-        />, document.getElementById('container'));
+        /></Provider>, document.getElementById('container'));
         const detailsInfo = document.querySelector('.ms-details-info');
         expect(detailsInfo).toBeTruthy();
         waitFor(() => document.querySelector('.ms-details-info-fields'))
@@ -132,7 +136,7 @@ describe('DetailsInfo component', () => {
             .catch(done);
     });
     it('should render tabs items and test onSelectTab', (done) => {
-        ReactDOM.render(<DetailsInfo
+        ReactDOM.render(<Provider store={mockStore}><DetailsInfo
             editing
             tabs={[
                 {
@@ -173,7 +177,7 @@ describe('DetailsInfo component', () => {
                 done();
             }}
             selectedTab="info2"
-        />, document.getElementById('container'));
+        /></Provider>, document.getElementById('container'));
         const detailsInfo = document.querySelector('.ms-details-info');
         expect(detailsInfo).toBeTruthy();
         const tabLink = document.querySelector('.ms-details-info li a');
