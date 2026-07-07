@@ -38,7 +38,7 @@ This solution partially degradates the functionalities of user management UI of 
 
 ## Requirements
 
-1. GeoServer must have the [Authkey Plugin Community Module](https://build.geoserver.org/geoserver/main/community-latest/) installed
+1. GeoServer must have the [AuthKey extension](https://docs.geoserver.org/latest/en/user/extensions/authkey/index.html) installed
 2. MapStore2 Database must be reachable by GeoServer (H2 will not work, use PostgreSQL or Oracle)
 3. MapStore2 must be reachable by GeoServer via HTTP
 
@@ -219,7 +219,7 @@ Here a list of the extensions that MapStore can use:
        - **gs:IntersectionFeatureCollection**: allows to return the intersection between two feature collections adding the attributes from both of them. This is mandatory for the [*GeoProcessing*](https://docs.mapstore.geosolutionsgroup.com/en/latest/user-guide/geoprocessing-tool/) plugin intersection option.
        - **gs:CollectGeometries**: allows to collect all the default geometries in a feature collection and returns them as a single geometry collection. This can be used by the [*GeoProcessing*](https://docs.mapstore.geosolutionsgroup.com/en/latest/user-guide/geoprocessing-tool/) plugin to create a new layer.
 
-- [WPS download community module](https://docs.geoserver.org/stable/en/user/extensions/wps-download/index.html): this additional module allows to improve the exporter plugin, based by default only on the WFS, providing asynchronous download capabilities.
+- [WPS Download extension](https://docs.geoserver.org/latest/en/user/extensions/wps-download/index.html): this additional extension allows to improve the exporter plugin, based by default only on the WFS, providing asynchronous download capabilities.
 The advanced Download, activated when GeoServer provides the WPS service above, allows to
        - Download also the raster data
        - Schedule download processes in a download list (and download them later, when post processing is finished).
