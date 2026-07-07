@@ -130,6 +130,22 @@ Once a group is selected the following toolbar appears and the user can:
   **-** Edit the group's **Description**<br>
   **-** Configure the **Tooltip** that appears moving the cursor over the group's item in TOC. In this case the user can decide that the *Title*, the *Description*, both or nothing will be displayed. Moreover you can set the *Placement* of the tooltip, choosing between *Top*, *Right* or *Bottom*. In all circumstances the title is fully visible in TOC the tooltip doesn't appear.
 
+### Group icons in TOC
+
+By default, MapStore does not provide a dedicated setting in *Group settings* to assign a custom icon to a specific group item in TOC.
+
+Native group customization options are:
+
+* group title
+* localized title
+* description
+* tooltip options
+
+If you need custom icons per group, this requires a downstream UI customization (for example by extending TOC components in a custom project).
+
+!!! note
+        DOM post-processing scripts can be fragile because TOC markup may change across releases. For long-term maintenance, prefer a plugin/component level customization.
+
 <img src="../img/toc/group-settings-panel.jpg" class="ms-docimage"/>
 
 * **Remove selected group** and its content through the <img src="../img/button/delete.jpg" class="ms-docbutton"/> button
