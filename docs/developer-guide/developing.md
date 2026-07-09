@@ -166,6 +166,33 @@ You can login as `admin` to set-up new users and access to all the features rese
 
 The database used by default in this mode is H2 on disk. You can find the files of the database in the directory `webapps/mapstore/` starting from your execution context. Check how to set-up database in the dedicated section of the documentation.
 
+#### Local database setup in dev mode
+
+In dev mode, MapStore uses the default datasource configuration unless you provide an override.
+
+For a quick local PostgreSQL setup:
+
+- create a PostgreSQL database (for example `geostore`) and user
+- create a datasource override file (for example `<datadir>/geostore-datasource-ovr.properties`) with PostgreSQL settings
+
+```properties
+geostoreDataSource.driverClassName=org.postgresql.Driver
+geostoreVendorAdapter.databasePlatform=org.hibernate.dialect.PostgreSQLDialect
+geostoreDataSource.url=jdbc:postgresql://localhost:5432/geostore
+geostoreDataSource.username=geostore
+geostoreDataSource.password=geostore
+geostoreEntityManagerFactory.jpaPropertyMap[hibernate.default_schema]=geostore
+geostoreEntityManagerFactory.jpaPropertyMap[hibernate.hbm2ddl.auto]=update
+```
+
+- start backend pointing to the data directory that contains the override file:
+
+```bash
+npm run be:start -- -Ddatadir.location=/path/to/datadir
+```
+
+For the complete setup (schema modes, H2/PostgreSQL/Oracle details), see [Database Setup](database-setup.md) and [Externalized Configuration](externalized-configuration.md).
+
 ### Running Backend
 
 When we say "running the backend", in fact we say that we are running some sort of a whole instance of MapStore locally, that can be used as backend for your frontend dev server, or for debugging of the backend itself.
