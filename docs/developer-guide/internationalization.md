@@ -17,8 +17,11 @@ A user can change the selected language from UI. MapStore will load the proper f
 
 ## Configuration files
 
-To provide support to a specific language MapStore need to have the necessary setup in the LocaleUtils.js file (see below [section for details about to configure this file]).
+To provide support to a specific language MapStore needs to have the necessary setup in `web/client/utils/LocaleUtils.js` (see below [section for details about how to configure this file]).
 In addition you need the proper translations files.
+
+!!! note
+    These files are available in the **source code repository**. If you are working with a compiled/deployed package only (for example WAR, Docker image, or binary distribution), you can configure supported locales in `localConfig.json` but you cannot add new locale-data imports there.
 
 Let's imagine that the variable code is 'en', CODE is 'EN' standing for english. For each language you need to have **messages file** containing the localized strings, a **flag image** to identify the language and some **html fragments** (optional) for some specific plugins.
 
@@ -51,6 +54,8 @@ You can configure MapStore to provide to the user only a restricted list of sele
 Setting locales in localConfig.json file is doable only for supported locales present in LocaleUtils.js.
 The default behavior is to use those already configured in "supportedLocales" object.
 You can customize the messages by editing the data.code-CODE.json files.
+
+If a locale is already supported by MapStore (for example `pt-PT`), enabling it usually only requires adding it to `initialState.defaultState.locales.supportedLocales` in `localConfig.json`.
 
 The `locale` property determines the language to use for the application. If not specified, the language will be selected checking the browser's locale first. If the browser locale is not supported, MapStore will select the first language available in `supportedLocales`.
 
