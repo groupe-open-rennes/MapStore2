@@ -183,6 +183,27 @@ The last step is to configure MapStore to use the authkey with the configured in
          - `params`: use query parameters for authkey authentication
            - `authkey`: the name of the parameter (must match the one in GeoServer configuration, default is `authkey`)
 
+### Quick verification checklist
+
+After completing the setup, check the following points before troubleshooting deeper:
+
+- login to MapStore with `admin/admin` and verify the session is valid
+- open GeoServer and verify the `geostore` UserGroup service and Role service are both reachable
+- in GeoServer security settings, confirm `geostore` is on top of the provider chain
+- confirm the AuthKey filter is enabled in the default filter chain
+- from MapStore, open a layer coming from GeoServer and verify requests include the `authkey` parameter
+
+### Troubleshooting
+
+- `401`/`403` from GeoServer layers:
+  check the AuthKey filter order and verify `requestsConfigurationRules` in MapStore.
+- users exist in MapStore but not resolved in GeoServer:
+  verify JDBC URL/credentials and ensure GeoServer can reach the MapStore database.
+- authentication works in UI but style editing fails:
+  add the `geostore` filter also to the REST filter chain, as described above.
+- permission behavior is inconsistent:
+  verify that user groups and derived roles are correctly configured in GeoServer Role service.
+
 ### Advantages of user integration
 
 Integrating the user/groups database with GeoServer you can allow some users to:
