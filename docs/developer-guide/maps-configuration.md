@@ -1223,6 +1223,29 @@ The `terrain` layer of `cesium` type allows using Cesium terrain format complian
 }
 ```
 
+Example with an external quantized-mesh terrain service:
+
+```json
+{
+  "type": "terrain",
+  "provider": "cesium",
+  "url": "https://api.maptiler.com/tiles/terrain-quantized-mesh-v2/?key={apiKey}",
+  "visibility": true,
+  "options": {
+    "requestVertexNormals": true
+  }
+}
+```
+
+!!! warning
+    The old public STK terrain endpoint (`https://assets.agi.com/stk-terrain/world`) is no longer a reliable default. Use a valid terrain service URL (and required credentials, if any).
+
+!!! note
+    If switching to 3D shows an empty/blank globe, verify that:
+    - the `terrain` URL is reachable from the browser
+    - CORS is correctly configured on the terrain service
+    - required API keys/tokens are valid
+
 ##### Cesium Ion terrain provider
 
 The `terrain` layer of the `cesium-ion` type enables the use of Cesium Ion terrain format-compliant services (i.e., Cesium Ion resources). The options attribute allows for the configuration and access of Ion resources and their associated assets.
