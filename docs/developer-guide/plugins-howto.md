@@ -14,7 +14,7 @@ For this tutorial, a "standard project" is used.
 
 `js/plugins/Sample.jsx`
 
-Plugins are react component exported with the [createPlugin](https://mapstore.geosolutionsgroup.com/mapstore/docs/api/framework#createPlugin) function
+A plugin is a React component wrapped and exported with the [createPlugin](https://mapstore.geosolutionsgroup.com/mapstore/docs/api/framework#createPlugin) function.
 
 ```javascript
 import React from "react";
@@ -47,10 +47,8 @@ Being a component with a name (**Sample** in our case) you can include it in you
 
 import SamplePlugin from "./plugins/Sample";
 
-export const plugins = {
-    // ...
-    SamplePlugin,
-    // ...
+const plugins = {
+    SamplePlugin
 };
 
 export default {
@@ -59,7 +57,9 @@ export default {
 
 ```
 
-**Note** The chosen component name is always suffixed with **Plugin** when imported in the *plugins.js* file.
+**Note** The plugin name is always suffixed with **Plugin** when imported in the *plugins.js* file.
+
+The example above is the preferred minimal pattern: export a plugin descriptor with `createPlugin`, then register it in *plugins.js*.
 
 Include the plugin.js from your app.jsx either replacing the plugins import from the product or extending it:
 
@@ -75,8 +75,8 @@ import main from "@mapstore/product/main";
 const allPlugins = {
     ...m2Plugins,
     plugins: {
-        ...customPlugins.plugins,
-        ...m2Plugins.plugins
+        ...m2Plugins.plugins,
+        ...customPlugins.plugins
     }
 };
 
