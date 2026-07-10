@@ -12,8 +12,6 @@ import classNames from 'classnames';
 
 import {
     Option,
-    Dropdown,
-    DropdownOption,
     stopPropagation,
     getFirstIcon } from 'react-draft-wysiwyg';
 
@@ -28,54 +26,39 @@ class MSLinkOptions extends Component {
         availableStorySections: PropTypes.array
     };
 
-    state = { expanded: false }
+    state = {}
 
     render() {
-        const { expanded } = this.state;
         const {
             externalLinkOption,
             onSelectionChange,
             currentSelectOption,
             availableStorySections } = this.props;
+        const options = [
+            { value: externalLinkOption, label: externalLinkOption },
+            ...(availableStorySections || []).map(section => ({
+                value: section.id,
+                label: section.title || section.type || section.id
+            }))
+        ];
         return (
             <div className="rdw-block-wrapper" aria-label="rdw-block-control">
-                <Dropdown
+                <select
                     className="ms-rdw-link-options-dropdown"
-                    onChange={onSelectionChange}
-                    expanded={expanded}
-                    doExpand={this.toggle}
-                    doCollapse={this.toggle}
-                    onExpandEvent={this.toggle}
-                    title="MSLinks"
+                    value={currentSelectOption}
+                    onClick={stopPropagation}
+                    onChange={(e) => {
+                        const selected = options.find(o => o.value === e.target.value || o.label === e.target.value);
+                        if (selected) onSelectionChange(selected);
+                    }}
                 >
-                    <span>
-                        {currentSelectOption}
-                    </span>
-                    <DropdownOption
-                        active
-                        value={{value: externalLinkOption, label: externalLinkOption}}
-                        key={externalLinkOption}
-                    >
-            External Link
-                    </DropdownOption>
-                    {availableStorySections && availableStorySections.map(section => (
-                        <DropdownOption
-                            active={section.id === currentSelectOption}
-                            value={{value: section.id, label: section.title || section.type || section.id}}
-                            key={section.id}
-                        >
-                            {section.title || section.type || section.id}
-                        </DropdownOption>
+                    <option value="Select link target" disabled>Select link target</option>
+                    {options.map(opt => (
+                        <option key={opt.value} value={opt.value}>{opt.label}</option>
                     ))}
-                </Dropdown>
+                </select>
             </div>
         );
-    }
-
-    toggle = () => {
-        this.setState(prev => ({
-            expanded: !prev.expanded
-        }));
     }
 }
 
