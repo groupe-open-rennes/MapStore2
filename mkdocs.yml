@@ -159,6 +159,7 @@ nav:
     - How to:
       - Dev How To: 'developer-guide/dev-how-to.md'
       - Writing Plugins: 'developer-guide/plugins-howto.md'
+      - Writing Enhancers: 'developer-guide/writing-enhancers.md'
       - Writing Epics: 'developer-guide/writing-epics.md'
       - Writing Actions and Reducers: 'developer-guide/writing-actions-reducers.md'
     - Configuration:
