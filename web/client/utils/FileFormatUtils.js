@@ -82,8 +82,8 @@ const formats = [{
     outputFormat: "gml32",
     extension: "gml"
 }, {
-    outputFormat: "application/x-gpk",
-    extension: "gpk"
+    outputFormat: "application/x-gpkg",
+    extension: "gpkg"
 }
 ];
 
