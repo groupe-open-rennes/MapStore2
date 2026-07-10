@@ -799,6 +799,9 @@ There is also a set of options to (dynamically) add/exclude containers:
 
 Note that also these properties accept dynamic expressions.
 
+!!! note
+    When a container plugin is removed from `localConfig.json`, plugins that declare it in their `containers` section **will still be visible** in the root container. This is by design: a plugin is only hidden from a specific container, not from the application entirely. To fully hide a plugin, either remove it from `plugins.js` or use `hideFrom` / `disablePluginIf` in the configuration.
+
 `js/plugins/Container.jsx`
 
 ```javascript
