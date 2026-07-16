@@ -230,8 +230,7 @@ class LayoutComponent extends Component {
               onClick={stopPropagation}
               onMouseDown={(e) => {
                   stopPropagation(e);
-                  // Keep the editor focused (avoid blur/teardown) when clicking
-                  // non-input controls, while inputs can still get focus (#8862).
+                  // Prevent editor blur on non-input controls (#8862)
                   if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
                       e.preventDefault();
                   }

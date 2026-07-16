@@ -104,8 +104,7 @@ export const withGeoStoryEditor = compose(
     }),
     withHandlers({
         onBlur: ({toggleEditing = () => {}}) => () => {
-            // Do not tear down the editor if focus moved into the link modal,
-            // otherwise the modal would be closed on interaction (#8862).
+            // Keep editing if focus moved into the link modal (#8862)
             setTimeout(() => {
                 const active = typeof document !== 'undefined' && document.activeElement;
                 if (active && active.closest && active.closest('.rdw-link-modal')) {
