@@ -104,7 +104,14 @@ export const withGeoStoryEditor = compose(
     }),
     withHandlers({
         onBlur: ({toggleEditing = () => {}}) => () => {
-            toggleEditing(false);
+            // Keep editing if focus moved into the link modal (#8862)
+            setTimeout(() => {
+                const active = typeof document !== 'undefined' && document.activeElement;
+                if (active && active.closest && active.closest('.rdw-link-modal')) {
+                    return;
+                }
+                toggleEditing(false);
+            }, 150);
         }
     }),
     withProps(({ sections = []}) => {

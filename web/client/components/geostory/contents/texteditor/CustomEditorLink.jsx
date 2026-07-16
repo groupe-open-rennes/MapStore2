@@ -228,6 +228,13 @@ class LayoutComponent extends Component {
           <div
               className={classNames('rdw-link-modal', popupClassName)}
               onClick={stopPropagation}
+              onMouseDown={(e) => {
+                  stopPropagation(e);
+                  // Prevent editor blur on non-input controls (#8862)
+                  if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                      e.preventDefault();
+                  }
+              }}
           >
               <label className="rdw-link-modal-label" htmlFor="linkTitle">
                   {translations['components.controls.link.linkTitle']}
