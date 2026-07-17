@@ -18,7 +18,9 @@ In particular, it is possible to choose between:
 
 * **Map**
 
-Creating *Chart*, *Text*, *Table* and *Counter* widgets the procedure is almost the same as that described for [create widgets in maps](widgets.md#widgets). The only minor differences are the following:
+* **Filter Selector**
+
+Creating *Chart*, *Text*, *Table*, *Counter* and *Filter Selector* widgets the procedure is almost the same as that described for [create widgets in maps](widgets.md#widgets). The only minor differences are the following:
 
 * In dashboards as soon as the user selects the widget type, a panel appears to select the layer from which the widget will be created. [MapStore](https://mapstore.geosolutionsgroup.com/mapstore/#/) allows you to choose between CSW, WMS and WMTS GeoSolutions Services, present by default, or by accessing WMS, WFS, CSW, WMTS and TMS Remote Services as explained in the [Managing Remote Services](catalog.md#managing-remote-services) section
 
@@ -44,12 +46,16 @@ Here the user can:
 
 * Move forward to the next step through the <img src="../img/button/next.jpg" class="ms-docbutton"/> button
 
-Once a map has been selected, the panel display the layers present in the map in the preview and lists the layer associated with the map.
+Once a map is selected, the panel displays:
+
+* The map preview
+
+* The **Layers** tab with the list of layers present in the map
+
+* The **Settings** tab
 
 !!!note
     If user has selected more than one map, the map wizard displays the *map switcher* dropdown allowing user to select and configure the map.
-
-<img src="../img/adding-widgets/wid-layers-list.jpg" class="ms-docimage"  style="max-width:400px;"/>
 
 !!!note
     If the **Empty Map** has been selected the user can:
@@ -62,7 +68,9 @@ Once a map has been selected, the panel display the layers present in the map in
 
     * Add layers to the map through the <img src="../img/button/+++.jpg" class="ms-docbutton"/> button, as follows: <video controls class="ms-docimage"  style="max-width:400px;"><source src="../img/adding-widgets/wid-add-layer.mp4"> /></video>
 
-On the **Configure map options** panel the user can toggle the layer visibility and set layers transparency, as explained in [Display options](toc.md#display-options-in-panel) section. Furthermore, the user can manage the layer with the new buttons present on the layer toolbar by selecting the layer on the layers list.
+### Layers tab
+
+From the Layers tab the user can toggle the layer visibility and set layers transparency, as explained in [Display options](toc.md#display-options-in-panel) section. Furthermore, the user can manage the layer with the buttons present in the layer toolbar by selecting the layer in the list first.
 
 <img src="../img/adding-widgets/wid-layers-new-buttons.jpg" class="ms-docimage"  style="max-width:400px;"/>
 
@@ -78,6 +86,20 @@ Here, the user is allowed to:
 
 !!!warning
     The *Floating Identify* tool is active by default (the button is green)
+
+### Settings tab
+
+By switching to the Settings tab, the user can customize the map widget with the following options:
+
+<img src="../img/adding-widgets/settings-tab.jpg" class="ms-docimage"  style="max-width:400px;"/>
+
+* Enable/Disable the **Background Selector** useful to choose from configured backgrounds the desired one for the map
+
+* Enable/Disable the **Legend** for showing the layers legend on map
+
+Below is the final result displayed in the map widget after adding the two options above:
+
+<img src="../img/adding-widgets/settings-tab-sample.jpg" class="ms-docimage"/>
 
 Once the <img src="../img/button/next.jpg" class="ms-docbutton"/> button is clicked, the last step of the process is displayed like the following:
 
