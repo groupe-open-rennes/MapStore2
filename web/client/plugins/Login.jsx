@@ -111,7 +111,9 @@ function LoginPlugin({
 
     const { loadedPlugins } = context;
     const configuredItems = usePluginItems({ items, loadedPlugins });
-    const showPasswordChange = !(!isAdmin && isUsingLDAP);
+    const showPasswordChange = typeof user?.canChangePassword === 'boolean'
+        ? user.canChangePassword
+        : !isUsingLDAP;
     const authenticated = user?.[displayName];
     const userItems = authenticated ? [
         { name: 'UserDetails', Component: UserDetailsMenuItem, position: 1},
