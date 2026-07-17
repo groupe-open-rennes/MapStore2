@@ -17,7 +17,7 @@ Once at least one layer is present in the map (see [Catalog](catalog.md#catalog-
 
 <img src="../img/widgets/map-widgets-panel.jpg" class="ms-docimage" style="max-width:450px;"/>
 
-From here the user can choose between four different types of widget:
+From here the user can choose between five different types of widget:
 
 * *Chart*
 * *Text*
@@ -71,7 +71,6 @@ Once the chart type is chosen, it is possible to set up the trace with the follo
 * **Trace style**
 * **Trace axes**
 * **Trace value formatting**
-* **Null Value Handling**
 
 ##### Trace Data
 
@@ -108,7 +107,7 @@ With the **Simple style**, the editor is allowed to customize the `Fill color`, 
 
 ###### Classification style
 
-[MapStore](https://mapstore.geosolutionsgroup.com/mapstore/#/) provides the possibility to customize the colors of the charts lines, bars and slices. It is possible to classify the style based on the attributes of the layer. In this case it is possible to select the `Attribute` to use for the classification along with the classification `Method` (*Quantile*, *Equal interval*, *Natural breaks* and *Unique interval*) and select whether to `Sort` the classification by *Attribute X* or *Attribute Y*. Choose a `Color ramp`, the number of classification `Intervals` and the order (with `Reverse order`) of the classification intervals colors. Finally customize the `Outline color` and the `Outline width`.
+For *Bar Charts* and *Pie Charts*, [MapStore](https://mapstore.geosolutionsgroup.com/mapstore/#/) provides the possibility to customize the colors of the charts bars and slices. It is possible to classify the style based on the attributes of the layer. In this case it is possible to select the `Attribute` to use for the classification along with the classification `Method` (*Quantile*, *Equal interval*, *Natural breaks* and *Unique interval*) and select whether to `Sort` the classification by *Attribute X* or *Attribute Y*. Choose a `Color ramp`, the number of classification `Intervals` and the order (with `Reverse order`) of the classification intervals colors. Finally customize the `Outline color` and the `Outline width`.
 
 <img src="../img/widgets/trace_classification_style.jpg" class="ms-docimage"  style="max-width:450px;"/>
 
@@ -181,18 +180,6 @@ An example of a custom trace value tooltip can be the following:
 
 <img src="../img/widgets/custom_trace_value_tooltip.jpg" class="ms-docimage"  style="max-width:450px;"/>
 
-##### Null Value Handling
-
-The user can customize how **Null Value** are handled for the `X Attribute` field by selecting a *Strategy* from the following options:
-
-<img src="../img/widgets/trace_null_value.jpg" class="ms-docimage"  style="max-width:450px;"/>
-
-* **Ignore** to keep the *Null* values unchanged in the data.
-
-* **Exclude** to remove all records where the value is *Null*
-
-* **Use Placeholder** to replace *Null* values with a custom value provided by the user
-
 ##### Trace legend options
 
 For the *Pie Charts*, the *Trace legend options* is available and it is displayed as follows:
@@ -221,16 +208,6 @@ Through this section, for each axis, the user is allowed to:
 
 * Choose the **Type** (between `Auto`, `Linear`, `Category`, `Log` or `Date`): the axis type is auto-detected by looking at the data (*Auto* option is automatically managed and selected by the tool and it is usually good as default setting).
 
-!!! Note
-    If **`Date`** is selected in the *Type* option, the **Highlight selected time** setting becomes available in the *Axes* panel, allowing you to highlight the current date in the chart.
-    <img src="../img/widgets/show-current-time.jpg" class="ms-docimage" style="max-width:300px;"/>
-    Once enabled, you can customize the appearance of the current time line using the following options:
-    <img src="../img/widgets/customize-current-time.jpg" class="ms-docimage" style="max-width:300px;"/>
-
-    * **Color**: choose the line color using the *Color Picker*.
-    * **Size**: set the line thickness in `px`.
-    * **Style**: select the line style from `Solid`, `Dot`, `Dash`, `LongDash` or `DashDot`
-
 * Change the **Color** through the color picker
 
 * Change the **Font size**
@@ -241,10 +218,6 @@ Through this section, for each axis, the user is allowed to:
 
 !!! Note
     More information about the syntax options allowed for **Format** are available [here](https://d3-wiki.readthedocs.io/zh_CN/master/Formatting/) in the online documentation.
-
-* Add **Axis Tick Values**, as comma-separated values, to force the axis to display only these specific points.
-
-* Add **Axis Tick Text**, as custom labels, to replace the text at the positions defined in Axis Tick Values. The alignment is strictly positional (matched by index, one label per value).
 
 * Choose the **Side** of the chart on which to display the axis labels (between `Left` or `Right`)
 
@@ -270,8 +243,6 @@ Here the user can:
 * Show/Hide the chart's grid in background with the **Hide Grid** control (only for the *Bar Charts* and the *Line Charts*)
 
 * Enable the chart's legend by activating **Display Legend**
-
-* Select the **Tooltip Mode**, choosing how the tooltip on the chart will be shown, between *Unified X tooltip*, *Unified Y tooltip*, *X tooltip*, *Y tooltip*, *Individual tooltip* and *No tooltip*.
 
 * Choose the **Color** for all chart texts through the color picker (only for the *Bar Charts* and the *Line Charts*)
 
