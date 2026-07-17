@@ -139,14 +139,14 @@ describe('Login Plugin', () => {
             expect(entries.length).toEqual(2);
             expect([...entries].map(entry => entry.innerText)).toEqual(['user.info', 'user.logout']);
         });
-        it('test show change password in case LDAP user [admin] ', () => {
+        it('test hide change password in case LDAP user [admin] ', () => {
             const storeState = stateMocker(toggleControl('LoginForm', 'enabled'), loginSuccess({  User: { name: "Test", access_token: "some-token", role: 'ADMIN' }}) );
             const { Plugin } = getPluginForTest(Login, storeState);
             ReactDOM.render(<Plugin isUsingLDAP displayName="name"  />, document.getElementById("container"));
             expect(document.querySelector('#mapstore-login-menu .glyphicon-user')).toBeTruthy();
             const entries = document.querySelectorAll("#mapstore-login-menu ~ ul li[role=\"presentation\"]");
-            expect(entries.length).toEqual(6);
-            expect([...entries].map(entry => entry.innerText)).toEqual(['user.info', 'user.changePwd', 'users.title', 'usergroups.title', 'resourcesCatalog.manageTags', 'user.logout']);
+            expect(entries.length).toEqual(5);
+            expect([...entries].map(entry => entry.innerText)).toEqual(['user.info', 'users.title', 'usergroups.title', 'resourcesCatalog.manageTags', 'user.logout']);
         });
         it('test show change password in case ms user ', () => {
             const storeState = stateMocker(toggleControl('LoginForm', 'enabled'), loginSuccess({  User: { name: "Test", access_token: "some-token", role: 'USER' }}) );
@@ -156,6 +156,15 @@ describe('Login Plugin', () => {
             const entries = document.querySelectorAll("#mapstore-login-menu ~ ul li[role=\"presentation\"]");
             expect(entries.length).toEqual(3);
             expect([...entries].map(entry => entry.innerText)).toEqual(['user.info', 'user.changePwd', 'user.logout']);
+        });
+        it('test hide change password when user.canChangePassword is false', () => {
+            const storeState = stateMocker(toggleControl('LoginForm', 'enabled'), loginSuccess({  User: { name: "Test", access_token: "some-token", role: 'USER', canChangePassword: false }}) );
+            const { Plugin } = getPluginForTest(Login, storeState);
+            ReactDOM.render(<Plugin />, document.getElementById("container"));
+            expect(document.querySelector('#mapstore-login-menu .glyphicon-user')).toBeTruthy();
+            const entries = document.querySelectorAll("#mapstore-login-menu ~ ul li[role=\"presentation\"]");
+            expect(entries.length).toEqual(2);
+            expect([...entries].map(entry => entry.innerText)).toEqual(['user.info', 'user.logout']);
         });
     });
     describe('OmniBar menu entries', () => {

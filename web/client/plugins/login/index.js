@@ -56,14 +56,18 @@ const userMenuConnect = connect((state, props) => ({
     const {type, showAccountInfo = false, showPasswordChange = false} =
         (providers ?? []).find(({provider}) => provider === currentProvider) || {};
     const isOpenID = type === "openID";
-    const isNormalLDAPUser = ownProps.isUsingLDAP && !ownProps.isAdmin;
+    const isLDAPUser = ownProps.isUsingLDAP;
+    const userCanChangePassword = ownProps.user?.canChangePassword;
+    const resolvedPasswordChange = typeof userCanChangePassword === 'boolean'
+        ? userCanChangePassword
+        : ownProps.showPasswordChange;
 
     return {
         ...ownProps,
         ...stateProps,
         ...dispatchProps,
         showAccountInfo: isOpenID ? showAccountInfo : ownProps.showAccountInfo,
-        showPasswordChange: isOpenID ? showPasswordChange : isNormalLDAPUser ? false : ownProps.showPasswordChange
+        showPasswordChange: isOpenID ? showPasswordChange : isLDAPUser ? false : resolvedPasswordChange
     };
 });
 
