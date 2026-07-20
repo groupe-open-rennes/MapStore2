@@ -442,6 +442,8 @@ In **General Settings** of a IFC source type, it is possible to specify the serv
 
 An [**ArcGIS Server Services Directory**](https://developers.arcgis.com/rest/services-reference/enterprise/get-started-with-the-services-directory/) is a RESTful representation of all the services running on an ArcGIS Server site. MapStore allows adding ArcGIS [Map Service](https://developers.arcgis.com/rest/services-reference/enterprise/map-service/), [Image Service](https://developers.arcgis.com/rest/services-reference/enterprise/image-service/) and [Feature Service](https://developers.arcgis.com/rest/services-reference/enterprise/feature-service/) types through its *Catalog* tool where a specific source type can be configured.
 
+For **Feature Service** sources, MapStore can expose one or more layers available from the configured service endpoint.
+
 In **General Settings** of a ArcGIS source type, it is possible to specify the service `Title` and its `URL`.
 
 <img src="../img/catalog/ArcGIS_service.jpg" class="ms-docimage"  style="max-width:600px;"/>
@@ -461,7 +463,9 @@ In **General Settings** of a ArcGIS source type, it is possible to specify the s
     The tool capabilities currently available for layers from ArcGIS service are:
 
     * *Zoom to selected layer extent* <img src="../img/button/zoom-layer.jpg" class="ms-docbutton"/>: in order to zoom the map to the layer's extent
-    * Access the [Layer Settings](layer-settings.md#layer-settings) <img src="../img/button/properties.jpg" class="ms-docbutton"/> to view/edit the [General Information](layer-settings.md#general-information) and the [Display](layer-settings.md#ifc-layer) options
+    * Access the [Layer Settings](layer-settings.md#layer-settings) <img src="../img/button/properties.jpg" class="ms-docbutton"/> to view/edit the [General Information](layer-settings.md#general-information), the [Display](layer-settings.md#display), the [Style](layer-settings.md#style) and the [Feature Info](layer-settings.md#feature-info-form) options
+    * Use the [Identify Tool](navigation-toolbar.md#identify-tool) to inspect ArcGIS Feature Service features
+    * Visualize ArcGIS Feature Service layers also in [3D Navigation](navigation-toolbar.md#3d-navigation)
     * *Remove* the layer <img src="../img/button/delete.jpg" class="ms-docbutton"/>
 
 ### FlatGeobuf Catalog
