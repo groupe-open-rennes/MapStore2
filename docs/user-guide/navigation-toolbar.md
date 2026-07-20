@@ -41,6 +41,22 @@ The *3D navigation* in [MapStore](https://mapstore.geosolutionsgroup.com/mapstor
 !!! note
     The *3D mode* in MapStore support also the rendering **3D Tiles** layers once they are added through the *Catalog tool* as explained [here](catalog.md#3d-tiles-catalog).
 
+## Select Tool
+
+The *Select* tool allows users to select features on map layers using a drawing geometry.
+Once enabled, it opens a panel where you can:
+
+* choose a selection mode: **Point**, **Line**, **Circle**, **Rectangle**, **Polygon**
+* enable or disable selection per layer
+* inspect the number of matched features per layer
+* open layer actions from the contextual menu (zoom to selection, statistics, export, create layer, clear selection)
+
+The tool supports data selection on **WMS**, **WFS** and **ArcGIS** layers.
+
+!!! note
+    The *Filter data* action from the contextual menu is currently available for **WMS/WFS** layers only.
+    It is not available for **ArcGIS** layers.
+
 ## Identify Tool
 
 The *Identify* tool <img src="../img/button/identify.jpg" class="ms-docbutton"/> allows to retrieve information about layers on the map.

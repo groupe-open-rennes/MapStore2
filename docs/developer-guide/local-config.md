@@ -605,3 +605,48 @@ Custom services configuration:
   }
 }
 ```
+
+### Layers Selection plugin configuration
+
+The `LayersSelection` plugin can be enabled in `localConfig.json` and configured with optional `cfg` properties.
+
+Basic configuration:
+
+```javascript
+"plugins": {
+  "desktop": [
+    {
+      "name": "LayersSelection"
+    }
+  ]
+}
+```
+
+Configuration with custom options:
+
+```javascript
+"plugins": {
+  "desktop": [
+    {
+      "name": "LayersSelection",
+      "cfg": {
+        "selectTools": ["Point", "LineString", "Circle", "Rectangle", "Polygon"],
+        "queryOptions": {
+          "maxCount": 500
+        },
+        "highlightOptions": {
+          "fillColor": [255, 255, 0, 0.35],
+          "color": [255, 0, 0, 1],
+          "weight": 3
+        }
+      }
+    }
+  ]
+}
+```
+
+Supported configuration properties:
+
+- `selectTools`: array of enabled selection geometries. Supported values are `Point`, `LineString`, `Circle`, `Rectangle`, `Polygon`.
+- `queryOptions.maxCount`: maximum number of selected features returned per query. If omitted, no explicit limit is applied.
+- `highlightOptions`: style overrides applied to the selection highlight layer.
