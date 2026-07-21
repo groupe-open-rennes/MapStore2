@@ -197,6 +197,8 @@ In particular, with these options it is possible to:
 
     * Enable the **Depth test against terrain** if primitives such as billboards, polylines, labels, etc. should be depth-tested against the terrain surface instead of always having them drawn on top of terrain unless they're on the opposite side of the globe
 
+    * Enable the **Imagery layers overlay** to drape visible imagery layers (for example `WMS`, `TMS` and `WMTS`) on top of visible `3D Tiles` layers in 3D mode
+
     * Disable the **Terrain collision detection** to allow underground navigation.
 
     * Set the **Lighting Options** to configure the light source within the *Cesium* 3D viewer. The user can choose from the following modes:
