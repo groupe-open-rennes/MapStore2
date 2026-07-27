@@ -600,6 +600,105 @@ Containers will receive a list of items similar to this:
 items = [{ plugin: Sample, name: "Sample", id: "sample-tool", ... }]
 ```
 
+### Container patterns in real projects
+
+In real projects, defining container support is usually done to achieve one (or more) of these goals:
+
+- place the same feature in different entry points (for example in both *BurgerMenu* and *SidebarMenu*)
+- expose context-specific actions in specialized targets (for example `target: 'toolbar'` in *TOC*)
+- keep visibility stable across layouts using `doNotHide`
+- control precedence among possible placements using `priority`
+- provide a custom UI through `Component` when the container target expects a custom renderer
+
+The recommended workflow is:
+
+1. Start from the container where users expect to find the feature (for example *SidebarMenu* for tools, *TOC* toolbar for layer actions).
+2. Configure standard item properties (`name`, `position`, `text`, `icon`, `action`, `toggle`) when a default container item is enough.
+3. Add `target` + `Component` when you need a contextual action in a specific sub-area of the container.
+4. Add `doNotHide` and `priority` to make runtime behavior explicit when multiple containers are available.
+
+#### Example: same plugin in menu containers and contextual targets
+
+The *Catalog* plugin (metadata explorer) is exposed in *BurgerMenu* and *SidebarMenu*, and also provides contextual actions in *BackgroundSelector* and *TOC*:
+
+```javascript
+containers: {
+    BurgerMenu: {
+        name: 'metadataexplorer',
+        position: 5,
+        text: <Message msgId="catalog.title"/>,
+        icon: <Glyphicon glyph="folder-open"/>,
+        action: setControlProperty.bind(null, "metadataexplorer", "enabled", true, true),
+        doNotHide: true,
+        priority: 1
+    },
+    SidebarMenu: {
+        name: 'metadataexplorer',
+        position: 5,
+        text: <Message msgId="catalog.title" />,
+        icon: <Glyphicon glyph="folder-open" />,
+        action: setControlProperty.bind(null, "metadataexplorer", "enabled", true, true),
+        toggle: true,
+        doNotHide: true,
+        priority: 1
+    },
+    BackgroundSelector: {
+        name: 'MetadataExplorer',
+        target: 'background-toolbar',
+        Component: BackgroundSelectorAdd,
+        doNotHide: true,
+        priority: 1
+    },
+    TOC: {
+        name: 'MetadataExplorer',
+        target: 'toolbar',
+        Component: AddLayerButton,
+        position: 2,
+        doNotHide: true,
+        priority: 1
+    }
+}
+```
+
+#### Example: plugin actions in multiple functional contexts
+
+The *LayerDownload* plugin uses container targets to expose the same feature in different functional contexts (widgets menu, dashboard menu, TOC toolbar, feature editor toolbar):
+
+```javascript
+containers: {
+    Widgets: {
+        name: "LayerDownload",
+        target: "menu",
+        position: 11,
+        Component: LayerDownloadMenu,
+        doNotHide: true
+    },
+    Dashboard: {
+        name: "LayerDownload",
+        target: "menu",
+        position: 11,
+        Component: LayerDownloadMenu,
+        doNotHide: true
+    },
+    TOC: {
+        name: "LayerDownload",
+        target: "toolbar",
+        position: 11,
+        Component: LayerDownloadButton,
+        doNotHide: true
+    },
+    FeatureEditor: {
+        name: "LayerDownload",
+        target: "toolbar",
+        position: 20,
+        Component: FeatureEditorButton,
+        doNotHide: true
+    }
+}
+```
+
+This pattern helps keep plugin behavior consistent while adapting entry points to the current user workflow.
+
 Notice that also container related properties can be overridden in the application configuration, using the override property:
 
 `localConfig.json`
