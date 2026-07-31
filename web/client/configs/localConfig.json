@@ -443,10 +443,8 @@
             "bbox": true,
             "centerAndZoom": true
           },
-          "options": {
-            "tabsOrder": ["permalink", "direct", "embed"],
-            "hideTabs": ["social"]
-          }
+          "tabsOrder": ["permalink", "direct", "embed"],
+          "hideTabs": ["social"]
         }
       },
       "Permalink",

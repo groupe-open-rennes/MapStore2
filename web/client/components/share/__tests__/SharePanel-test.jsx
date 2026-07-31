@@ -70,7 +70,7 @@ describe("The SharePanel component", () => {
         let panel = ReactDOM.render(<SharePanel showAPI={false} getCount={() => 0} shareUrl="www.geo-solutions.it" isVisible />, document.getElementById("container"));
         const thirdTab = document.getElementById('sharePanel-tabs-tab-3');
         ReactTestUtils.Simulate.click(thirdTab);
-        expect(panel.state.eventKey).toBe(3);
+        expect(panel.state.selectedTab).toBe('embed');
         let liTags = document.querySelectorAll('li');
 
         expect(liTags.length).toBe(3);
@@ -78,7 +78,7 @@ describe("The SharePanel component", () => {
 
         panel = ReactDOM.render(<SharePanel embedPanel={false} showAPI={false} getCount={() => 0} shareUrl="www.geo-solutions.it" isVisible />, document.getElementById("container"));
         expect(document.getElementById('sharePanel-tabs-tab-3')).toNotExist();
-        expect(panel.state.eventKey).toBe(3);
+        expect(panel.state.selectedTab).toBe('embed');
         liTags = document.querySelectorAll('li');
         expect(document.querySelectorAll('h4')[0].innerHTML).toBe("<span>share.directLinkTitle</span>");
 
@@ -86,7 +86,7 @@ describe("The SharePanel component", () => {
     it('test hide advancedSettings when no settings configured', () => {
         const advancedSettings = {};
         let panel = ReactDOM.render(<SharePanel showAPI={false} advancedSettings={advancedSettings} getCount={() => 2} shareUrl="www.geo-solutions.it" isVisible />, document.getElementById("container"));
-        expect(panel.state.eventKey).toBe(1);
+        expect(panel.state.selectedTab).toBe('direct');
         expect(document.querySelectorAll('h4')[0].innerHTML).toBe("<span>share.directLinkTitle</span>");
 
         let advancedSettingsPanel = document.querySelector('.mapstore-switch-panel');
@@ -104,7 +104,7 @@ describe("The SharePanel component", () => {
         let panel = ReactDOM.render(<SharePanel showAPI={false} advancedSettings={advancedSettings} getCount={() => 2} shareUrl="www.geo-solutions.it" isVisible />, document.getElementById("container"));
         let liTags = document.querySelectorAll('li');
         expect(liTags.length).toBe(3);
-        expect(panel.state.eventKey).toBe(1);
+        expect(panel.state.selectedTab).toBe('direct');
         expect(document.querySelectorAll('h4')[0].innerHTML).toBe("<span>share.directLinkTitle</span>");
 
         let advancedSettingsPanel = document.querySelector('.mapstore-switch-panel');
@@ -112,7 +112,7 @@ describe("The SharePanel component", () => {
 
         const embedTab = document.getElementById('sharePanel-tabs-tab-3');
         ReactTestUtils.Simulate.click(embedTab);
-        expect(panel.state.eventKey).toBe(3);
+        expect(panel.state.selectedTab).toBe('embed');
         expect(document.querySelectorAll('h4')[0].innerHTML).toBe("<span>share.embeddedLinkTitle</span>");
         advancedSettingsPanel = document.querySelector('.mapstore-switch-panel');
         expect(advancedSettingsPanel).toBeFalsy();
@@ -166,7 +166,20 @@ describe("The SharePanel component", () => {
         expect(panel).toBeTruthy();
         const thirdTab = document.getElementById('sharePanel-tabs-tab-3');
         ReactTestUtils.Simulate.click(thirdTab);
-        expect(panel.state.eventKey).toBe(3);
+        expect(panel.state.selectedTab).toBe('custom-tab-0');
         expect(document.getElementById('permalink')).toBeTruthy();
+    });
+    it('test hideTabs option hides the given tabs (#708)', () => {
+        ReactDOM.render(<SharePanel getCount={() => 0} hideTabs={["social"]} shareUrl="www.geo-solutions.it" isVisible />, document.getElementById("container"));
+        const tabLinks = document.querySelectorAll('a[id^="sharePanel-tabs-tab-"]');
+        const titles = Array.from(tabLinks).map(a => a.textContent);
+        expect(titles.length).toBe(2);
+        expect(titles).toEqual(['share.direct', 'share.code']);
+    });
+    it('test tabsOrder option reorders the tabs (#708)', () => {
+        ReactDOM.render(<SharePanel getCount={() => 0} tabsOrder={["embed", "social", "direct"]} shareUrl="www.geo-solutions.it" isVisible />, document.getElementById("container"));
+        const tabLinks = document.querySelectorAll('a[id^="sharePanel-tabs-tab-"]');
+        const titles = Array.from(tabLinks).map(a => a.textContent);
+        expect(titles).toEqual(['share.code', 'share.social', 'share.direct']);
     });
 });

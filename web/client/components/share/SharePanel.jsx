@@ -26,7 +26,7 @@ import {
 } from 'react-bootstrap';
 import Message from '../../components/I18N/Message';
 import { join, isNil, isEqual, inRange, isEmpty, pick, omit } from 'lodash';
-import { removeQueryFromUrl, getSharedGeostoryUrl, CENTERANDZOOM, BBOX, MARKERANDZOOM, SHARE_TABS } from '../../utils/ShareUtils';
+import { removeQueryFromUrl, getSharedGeostoryUrl, CENTERANDZOOM, BBOX, MARKERANDZOOM } from '../../utils/ShareUtils';
 import { getLonLatFromPoint, convertRadianToDegrees, convertDegreesToRadian } from '../../utils/CoordinatesUtils';
 import { getMessageById } from '../../utils/LocaleUtils';
 import SwitchPanel from '../misc/switch/SwitchPanel';
@@ -57,6 +57,8 @@ import Portal from '../misc/Portal';
  * @prop {function} [onClose] function to call on close window event.
  * @prop {getCount} [getCount] function used to get the count for social links.
  * @prop {object} [advancedSettings] object with properties/settings for bbox, coordinates, zoom, marker, hideInTab
+ * @prop {string[]} [tabsOrder] optional order of the share tabs by key (e.g. `["permalink", "direct", "social", "embed"]`). Tabs not listed keep their natural order at the end
+ * @prop {string[]} [hideTabs] list of share tab keys to hide (e.g. `["social"]`)
  */
 class SharePanel extends React.Component {
     static propTypes = {
@@ -92,6 +94,8 @@ class SharePanel extends React.Component {
         settings: PropTypes.object,
         onUpdateSettings: PropTypes.func,
         selectedTab: PropTypes.string,
+        tabsOrder: PropTypes.arrayOf(PropTypes.string),
+        hideTabs: PropTypes.arrayOf(PropTypes.string),
         formatCoords: PropTypes.string,
         point: PropTypes.object,
         isScrollPosition: PropTypes.bool,
@@ -118,6 +122,8 @@ class SharePanel extends React.Component {
         onUpdateSettings: () => {},
         formatCoords: "decimal",
         isScrollPosition: false,
+        tabsOrder: [],
+        hideTabs: [],
         hideMarker: () => {},
         addMarker: () => {},
         updateMapView: () => {},
@@ -129,7 +135,7 @@ class SharePanel extends React.Component {
     };
 
     state = {
-        eventKey: 1,
+        selectedTab: 'direct',
         showAdvanced: true,
         defaultLoaded: false
     };
@@ -153,7 +159,7 @@ class SharePanel extends React.Component {
         const coordinate = this.getCoordinates(this.props);
         this.setState({
             bbox,
-            eventKey: SHARE_TABS[this.props.selectedTab] || 1,
+            selectedTab: this.props.selectedTab || 'direct',
             zoom: this.props.zoom,
             coordinate,
             ...this.processOrientation(this.props)
@@ -239,17 +245,6 @@ class SharePanel extends React.Component {
         return orig;
     };
 
-    getEmbedEventKey = (tabs = []) => {
-        return tabs.length + 1;
-    };
-
-    getShareTabs = (tabs = []) => {
-        return tabs.reduce((acc, tab) => {
-            acc[tab.key] = tab.eventKey;
-            return acc;
-        }, {});
-    };
-
     getHideIntabs = (itemTabs = []) => {
         return [
             this.props?.advancedSettings?.hideInTab,
@@ -292,9 +287,9 @@ class SharePanel extends React.Component {
         const hideInTabs = this.getHideIntabs(itemTabs);
 
         const {
-            tabsOrder = ["permalink", "direct", "social", "embed"],
+            tabsOrder = [],
             hideTabs = []
-        } = this.props.options || {};
+        } = this.props;
 
         let baseTabs = [
             {
@@ -318,44 +313,35 @@ class SharePanel extends React.Component {
             }))
         ];
 
+        if (this.props.embedPanel) {
+            allTabs.push({
+                key: "embed",
+                label: <Message msgId="share.code" />,
+                content: code
+            });
+        }
+
         allTabs = this.prepareTabs(allTabs, { hideTabs, tabsOrder });
 
-        const embedEventKey = this.getEmbedEventKey(allTabs);
-
-        const isValidTab =
-            allTabs.some(t => t.eventKey === this.state.eventKey) ||
-            (this.props.embedPanel !== false && this.state.eventKey === embedEventKey);
-
-        const currentTab = isValidTab
-            ? this.state.eventKey
-            : allTabs[0]?.eventKey || 1;
-
-        const SHARE_TABS_UPDATED = {
-            ...this.getShareTabs(allTabs),
-            ...(this.props.embedPanel !== false ? { embed: embedEventKey } : {})
-        };
+        const currentTab = allTabs.find(tab => tab.key === this.state.selectedTab)?.eventKey
+            || allTabs[0]?.eventKey
+            || 1;
+        const currentTabKey = allTabs.find(tab => tab.eventKey === currentTab)?.key;
 
         const tabs = (
             <Tabs
                 activeKey={currentTab}
                 id="sharePanel-tabs"
-                onSelect={(eventKey) => this.setState({ eventKey })}
+                onSelect={(eventKey) => {
+                    const tab = allTabs.find(t => t.eventKey === eventKey);
+                    this.setState({ selectedTab: tab?.key });
+                }}
             >
                 {allTabs.map(tab => (
                     <Tab key={tab.key} eventKey={tab.eventKey} title={tab.label}>
                         {currentTab === tab.eventKey && tab.content}
                     </Tab>
                 ))}
-
-                {this.props.embedPanel && (
-                    <Tab
-                        key="embed"
-                        eventKey={embedEventKey}
-                        title={<Message msgId="share.code" />}
-                    >
-                        {currentTab === embedEventKey && code}
-                    </Tab>
-                )}
             </Tabs>
         );
 
@@ -372,7 +358,7 @@ class SharePanel extends React.Component {
                 <div role="body" className="share-panels">
                     {tabs}
                     {!isEmpty(this.props.advancedSettings)
-                        && hideInTabs.every(hideInTab => currentTab !== SHARE_TABS_UPDATED[hideInTab])
+                        && !hideInTabs.includes(currentTabKey)
                         && this.renderAdvancedSettings()
                     }
                 </div>
