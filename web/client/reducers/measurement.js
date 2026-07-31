@@ -28,6 +28,7 @@ import { getGeomTypeSelected } from '../utils/MeasurementUtils';
 import { validateCoord, defaultUnitOfMeasure } from '../utils/MeasureUtils';
 import { isPolygon } from '../utils/openlayers/DrawUtils';
 import { dropRight, isEmpty, findIndex, isNumber } from 'lodash';
+import uuidv1 from 'uuid/v1';
 
 const defaultState = {
     lineMeasureEnabled: true,
@@ -134,7 +135,7 @@ function measurement(state = defaultState, action) {
 
         features = features.map(f => ({
             ...f,
-            ...(f.id && { id: f.id })
+            id: f.id ?? f.properties?.id ?? uuidv1()
         }));
 
         const geomTypeSelected = getGeomTypeSelected(features);
@@ -313,11 +314,15 @@ function measurement(state = defaultState, action) {
         const newFeatures = state.features.filter(f =>
             !state.selectedMeasureIds.some(id => String(id) === String(f.id))
         );
+        const currentStillExists = newFeatures[state.currentFeature] !== undefined;
 
         return {
             ...state,
             features: newFeatures,
-            selectedMeasureIds: []
+            selectedMeasureIds: [],
+            currentFeature: currentStillExists
+                ? state.currentFeature
+                : Math.max(0, newFeatures.length - 1)
         };
     }
     default:

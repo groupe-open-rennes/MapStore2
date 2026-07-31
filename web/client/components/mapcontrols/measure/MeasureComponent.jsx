@@ -329,7 +329,10 @@ class MeasureComponent extends React.Component {
                                             tooltip: this.renderText(this.props.inlineGlyph && this.props.lineGlyph, "measureComponent.MeasureLength"),
                                             onClick: () => this.props.changeMeasurementState({
                                                 mode: 'line',
-                                                geomType: this.getGeomType('line')
+                                                geomType: this.getGeomType('line'),
+                                                lineMeasureEnabled: true,
+                                                areaMeasureEnabled: false,
+                                                bearingMeasureEnabled: false
                                             }),
                                             disabled: !this.props.lineMeasureEnabled && isFeatureInvalid
                                         },
@@ -340,7 +343,10 @@ class MeasureComponent extends React.Component {
                                             tooltip: this.renderText(this.props.inlineGlyph && this.props.areaGlyph, "measureComponent.MeasureArea"),
                                             onClick: () => this.props.changeMeasurementState({
                                                 mode: 'polygon',
-                                                geomType: this.getGeomType('polygon')
+                                                geomType: this.getGeomType('polygon'),
+                                                lineMeasureEnabled: false,
+                                                areaMeasureEnabled: true,
+                                                bearingMeasureEnabled: false
                                             }),
                                             disabled: !this.props.areaMeasureEnabled && isFeatureInvalid
                                         },
@@ -352,7 +358,10 @@ class MeasureComponent extends React.Component {
                                             tooltip: this.renderText(this.props.inlineGlyph && this.props.bearingGlyph, this.isTrueBearing() ? "measureComponent.MeasureTrueBearing" : "measureComponent.MeasureBearing"),
                                             onClick: () => this.props.changeMeasurementState({
                                                 mode: 'bearing',
-                                                geomType: this.getGeomType('bearing')
+                                                geomType: this.getGeomType('bearing'),
+                                                lineMeasureEnabled: false,
+                                                areaMeasureEnabled: false,
+                                                bearingMeasureEnabled: true
                                             }),
                                             disabled: !this.props.bearingMeasureEnabled && isFeatureInvalid
                                         }

@@ -196,7 +196,12 @@ describe('Test the measurement reducer', () => {
             isDrawing: true,
             currentFeature: 0
         }, changeGeometry([feature, feature]));
-        expect(state.features).toEqual([feature, feature]);
+        expect(state.features.length).toBe(2);
+        state.features.forEach(f => {
+            expect(f.type).toBe("Feature");
+            expect(f.geometry).toEqual({type: "LineString"});
+            expect(f.id).toBeTruthy();
+        });
         expect(state.updatedByUI).toBe(false);
         expect(state.isDrawing).toBe(false);
         expect(state.geomTypeSelected).toEqual(["LineString"]);
