@@ -442,7 +442,9 @@
           "advancedSettings": {
             "bbox": true,
             "centerAndZoom": true
-          }
+          },
+          "tabsOrder": ["permalink", "direct", "embed"],
+          "hideTabs": ["social"]
         }
       },
       "Permalink",
