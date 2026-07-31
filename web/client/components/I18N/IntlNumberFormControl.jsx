@@ -166,7 +166,7 @@ class IntlNumberFormControl extends React.Component {
     format = val => {
         if (val !== '' && !isNaN(val) && val !== "NaN") {
             const locale = this.context && this.context.intl && this.context.intl.locale || "en-US";
-            const formatter = new Intl.NumberFormat(locale, {minimumFractionDigits: 0, maximumFractionDigits: 20});
+            const formatter = new Intl.NumberFormat(locale, {minimumFractionDigits: 0, maximumFractionDigits: 20, useGrouping: true});
             return formatter.format(val);
         }
         return "";
