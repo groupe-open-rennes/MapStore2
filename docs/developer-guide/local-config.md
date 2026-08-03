@@ -605,3 +605,82 @@ Custom services configuration:
   }
 }
 ```
+
+### MetadataInfo plugin configuration
+
+The `MetadataInfo` plugin displays ISO 19139 metadata records for layers in the TOC. It adds a button to the TOC toolbar that opens a metadata panel when clicked.
+
+Basic configuration (no custom template):
+
+```javascript
+"plugins": {
+  "desktop": [
+    { "name": "MetadataInfo" }
+  ]
+}
+```
+
+#### Custom metadata template
+
+The `metadataTemplate` property accepts a string, array of strings, object or function to customize the metadata panel layout. The template has access to a `model` object containing the parsed metadata fields (e.g. `model.identifier`, `model.title`, `model.abstract`).
+
+```javascript
+{
+  "name": "MetadataInfo",
+  "cfg": {
+    "metadataTemplate": [
+      "<div id={model.identifier}>",
+        "<table>",
+          "<tbody>",
+            "<tr><td>Identifier</td><td>{model.identifier}</td></tr>",
+            "<tr><td>Title</td><td>{model.title}</td></tr>",
+            "<tr><td>Abstract</td><td>{model.abstract}</td></tr>",
+          "</tbody>",
+        "</table>",
+      "</div>"
+    ]
+  }
+}
+```
+
+#### Custom XML namespaces and extractors
+
+When the metadata XML uses non-standard namespaces or when only specific fields should be extracted per layer, use `metadataOptions`:
+
+```javascript
+{
+  "name": "MetadataInfo",
+  "cfg": {
+    "metadataOptions": {
+      "xmlNamespaces": {
+        "gmd": "http://www.isotc211.org/2005/gmd",
+        "gco": "http://www.isotc211.org/2005/gco",
+        "gmx": "http://www.isotc211.org/2005/gmx"
+      },
+      "extractors": [
+        {
+          "layersRegex": "^workspace:my_layer$",
+          "properties": {
+            "title": "/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString",
+            "abstract": "/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:abstract/gco:CharacterString",
+            "pointsOfContact": {
+              "xpath": "/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty",
+              "properties": {
+                "individualName": "gmd:individualName/gco:CharacterString",
+                "organisationName": "gmd:organisationName/gco:CharacterString",
+                "role": "gmd:role/gmd:CI_RoleCode/@codeListValue"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+Configuration properties:
+
+- `metadataTemplate`: custom JSX-like template for the metadata panel. Receives `model` with parsed metadata fields. Accepts a string, an array of strings, an object or a function.
+- `metadataOptions.xmlNamespaces`: namespace map for the XPath parser, keyed by prefix.
+- `metadataOptions.extractors`: array of extractor definitions. Each entry targets layers matching `layersRegex` and maps property names to XPath expressions. If multiple extractors match, the first one is used.
